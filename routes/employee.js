@@ -6,22 +6,28 @@ const router = express.Router();
 // Add New Employee -- CREATE
 router.post("/", async (req, res) => {
   const data = req.body;
-
+  // TODO
   res.json(data);
 });
 
 // Get Employee Info -- READ
 router.get("/:id", async (req, res) => {
   const employee_id = req.params.id;
-  const data = employee_id;
-
+  const data = await getEmployeeByID(employee_id);
+  // check if data is empty
+  if (!data) {
+    res.statusCode = 404;
+    res.json({
+      message: `No employee found with id ${employee_id}`,
+    });
+  }
   res.json(data);
 });
 
 // List Employees (with Pagination) -- READ
 router.get("/", async (req, res) => {
   const data = req.body;
-
+  // TODO
   res.json(data);
 });
 
@@ -29,7 +35,7 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const employee_id = req.params.id;
   const data = employee_id;
-
+  // TODO
   res.json(data);
 });
 
@@ -37,7 +43,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const employee_id = req.params.id;
   const data = employee_id;
-
+  // TODO
   res.json(data);
 });
 
