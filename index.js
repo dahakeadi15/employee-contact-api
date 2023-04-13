@@ -8,6 +8,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
+// Use router
 app.use("/api/employee", employee);
 
 const port = process.env.PORT || 5000;
