@@ -1,13 +1,16 @@
 const express = require("express");
-const { getEmployeeByID, getEmployees, deleteOneEmployee } = require("../services/employee");
+const { getEmployeeByID, getEmployees, deleteOneEmployee, createOneEmployee } = require("../services/employee");
 
 const router = express.Router();
 
 // Add New Employee -- CREATE
 router.post("/", async (req, res) => {
-  const data = req.body;
-  // TODO
-  return res.status(200).json(data);
+  const received_data = req.body;
+  const data = await createOneEmployee(received_data);
+  return res.status(200).json({
+    message: "Successfully added new employee.",
+    employee_id: data.insertId,
+  });
 });
 
 // Get Employee Info -- READ

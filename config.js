@@ -54,6 +54,20 @@ const config = {
       "LIMIT ? OFFSET ?;",
     deleteOneEmployee: "DELETE FROM employees WHERE id = ?;",
     deleteEmergencyContacts: "DELETE FROM emergency_contacts WHERE id IN (? ,?);",
+    addOneEmployeeEmergencyContacts: "INSERT INTO emergency_contacts (contact_name, phone_number, relationship) " + "VALUES (?, ?, ?), (?, ?, ?);",
+    addOneEmployee:
+      "INSERT INTO employees (" +
+      "  full_name," +
+      "  job_title," +
+      "  phone_number," +
+      "  email," +
+      "  address," +
+      "  city," +
+      "  state," +
+      "  primary_emergency_contact_id," +
+      "  secondary_emergency_contact_id" +
+      ")" +
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
   },
 };
 

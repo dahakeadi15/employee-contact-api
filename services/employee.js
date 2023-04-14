@@ -2,7 +2,36 @@ const db = require("./db");
 const config = require("../config");
 
 // Add New Employee -- CREATE
-// TODO
+const createOneEmployee = async (data) => {
+  const emergency_contacts_data = [
+    data.primary_emergency_contact_name,
+    data.primary_emergency_contact_phone_number,
+    data.primary_emergency_contact_relationship,
+    data.secondary_emergency_contact_name,
+    data.secondary_emergency_contact_phone_number,
+    data.secondary_emergency_contact_relationship,
+  ];
+  // Add Emergency contacts and get their ids
+  const employee_cont = await db.execute_query(config.sql_queries.addOneEmployeeEmergencyContacts, emergency_contacts_data);
+  const last_insert_id = employee_cont.insertId;
+  const primary_emergency_contact_id = last_insert_id;
+  const secondary_emergency_contact_id = last_insert_id + 1;
+
+  const employee_data = [
+    data.full_name,
+    data.job_title,
+    data.phone_number,
+    data.email,
+    data.address,
+    data.city,
+    data.state,
+    primary_emergency_contact_id,
+    secondary_emergency_contact_id,
+  ];
+  // Add employee
+  const employee = await db.execute_query(config.sql_queries.addOneEmployee, employee_data);
+  return employee;
+};
 
 // Get Employee Info -- READ
 const getEmployeeByID = async (id) => {
@@ -42,6 +71,7 @@ const deleteOneEmployee = async (id) => {
 };
 
 module.exports = {
+  createOneEmployee,
   getEmployeeByID,
   getEmployees,
   deleteOneEmployee,
