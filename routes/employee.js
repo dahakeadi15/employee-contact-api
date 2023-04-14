@@ -1,5 +1,5 @@
 const express = require("express");
-const { getEmployeeByID, getEmployees, deleteOneEmployee, createOneEmployee } = require("../services/employee");
+const { getEmployeeByID, getEmployees, deleteOneEmployee, createOneEmployee, updateEmployeeByID } = require("../services/employee");
 
 const router = express.Router();
 
@@ -42,8 +42,8 @@ router.get("/", async (req, res) => {
 // Update Employee by id -- UPDATE
 router.put("/:id", async (req, res) => {
   const employee_id = req.params.id;
-  const data = employee_id;
-  // TODO
+  const employee_data = req.body;
+  const data = await updateEmployeeByID(employee_id, employee_data);
   return res.status(200).json(data);
 });
 

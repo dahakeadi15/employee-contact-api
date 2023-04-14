@@ -68,6 +68,8 @@ const config = {
       "  secondary_emergency_contact_id" +
       ")" +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+    updateOneEmployee: "UPDATE employees SET ? WHERE id = ?;",
+    updateOneEmployeeEmergencyContact: "UPDATE emergency_contacts SET ? WHERE id = ?;",
   },
 };
 

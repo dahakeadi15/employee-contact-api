@@ -54,7 +54,63 @@ const getEmployees = async (page_size, page_no) => {
 };
 
 // Update Employee by id -- UPDATE
-// TODO
+const updateEmployeeByID = async (id, data) => {
+  // Separating out the data
+  const employee_data = (({ full_name, job_title, phone_number, email, address, city, state }) => {
+    const _data = {};
+    if (full_name) _data.full_name = full_name;
+    if (job_title) _data.job_title = job_title;
+    if (phone_number) _data.phone_number = phone_number;
+    if (email) _data.email = email;
+    if (address) _data.address = address;
+    if (city) _data.city = city;
+    if (state) _data.state = state;
+    return _data;
+  })(data);
+
+  const primary_emergency_contact_data = (({
+    primary_emergency_contact_name,
+    primary_emergency_contact_phone_number,
+    primary_emergency_contact_relationship,
+  }) => {
+    const _data = {};
+    if (primary_emergency_contact_name) _data.contact_name = primary_emergency_contact_name;
+    if (primary_emergency_contact_phone_number) _data.phone_number = primary_emergency_contact_phone_number;
+    if (primary_emergency_contact_relationship) _data.relationship = primary_emergency_contact_relationship;
+    return _data;
+  })(data);
+
+  const secondary_emergency_contact_data = (({
+    secondary_emergency_contact_name,
+    secondary_emergency_contact_phone_number,
+    secondary_emergency_contact_relationship,
+  }) => {
+    const _data = {};
+    if (secondary_emergency_contact_name) _data.contact_name = secondary_emergency_contact_name;
+    if (secondary_emergency_contact_phone_number) _data.phone_number = secondary_emergency_contact_phone_number;
+    if (secondary_emergency_contact_relationship) _data.relationship = secondary_emergency_contact_relationship;
+    return _data;
+  })(data);
+
+  // Carrying out updates
+  if (Object.keys(employee_data).length) {
+    await db.execute_query(config.sql_queries.updateOneEmployee, [employee_data, id]);
+  }
+  if (Object.keys(primary_emergency_contact_data).length) {
+    const contact_id = (await getEmployeeByID(id)).primary_emergency_contact_id;
+    await db.execute_query(config.sql_queries.updateOneEmployeeEmergencyContact, [primary_emergency_contact_data, contact_id]);
+  }
+  if (Object.keys(secondary_emergency_contact_data).length) {
+    const contact_id = (await getEmployeeByID(id)).secondary_emergency_contact_id;
+    await db.execute_query(config.sql_queries.updateOneEmployeeEmergencyContact, [secondary_emergency_contact_data, contact_id]);
+  }
+
+  const updatedEmployee = await getEmployeeByID(id);
+  return {
+    message: "Update done successfully.",
+    updatedEmployee: updatedEmployee,
+  };
+};
 
 // Delete Employee by id -- DELETE
 const deleteOneEmployee = async (id) => {
@@ -75,4 +131,5 @@ module.exports = {
   getEmployeeByID,
   getEmployees,
   deleteOneEmployee,
+  updateEmployeeByID,
 };
