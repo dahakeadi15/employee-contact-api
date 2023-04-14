@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
       message: `Invalid Page Number. Please enter between 1 to ${total_pages}`,
     });
   }
-  return res.status(200).json(data);
+  return res.status(200).json({ data, current_page: page_no, total_pages });
 });
 
 // Update Employee by id -- UPDATE
