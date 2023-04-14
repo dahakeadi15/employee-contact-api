@@ -1,5 +1,5 @@
 const express = require("express");
-const { getEmployeeByID, getEmployees } = require("../services/employee");
+const { getEmployeeByID, getEmployees, deleteOneEmployee } = require("../services/employee");
 
 const router = express.Router();
 
@@ -47,8 +47,13 @@ router.put("/:id", async (req, res) => {
 // Delete Employee by id -- DELETE
 router.delete("/:id", async (req, res) => {
   const employee_id = req.params.id;
-  const data = employee_id;
-  // TODO
+  const data = await deleteOneEmployee(employee_id);
+
+  if (data === "No such employee") {
+    return res.status(404).json({
+      message: `No employee found with id ${employee_id}.`,
+    });
+  }
   return res.status(200).json(data);
 });
 

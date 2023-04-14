@@ -52,6 +52,8 @@ const config = {
       "LEFT JOIN emergency_contacts AS secondary_contact ON employees.secondary_emergency_contact_id = secondary_contact.id " +
       "ORDER BY employees.id " +
       "LIMIT ? OFFSET ?;",
+    deleteOneEmployee: "DELETE FROM employees WHERE id = ?;",
+    deleteEmergencyContacts: "DELETE FROM emergency_contacts WHERE id IN (? ,?);",
   },
 };
 

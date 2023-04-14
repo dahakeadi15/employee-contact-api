@@ -28,9 +28,21 @@ const getEmployees = async (page_size, page_no) => {
 // TODO
 
 // Delete Employee by id -- DELETE
-// TODO
+const deleteOneEmployee = async (id) => {
+  const employee = await getEmployeeByID(id);
+  if (!employee) {
+    return "No such employee";
+  }
+  const { primary_emergency_contact_id, secondary_emergency_contact_id } = employee;
+  await db.execute_query(config.sql_queries.deleteOneEmployee, id);
+  await db.execute_query(config.sql_queries.deleteEmergencyContacts, [primary_emergency_contact_id, secondary_emergency_contact_id]);
+  return {
+    message: `Successfully deleted employee with id ${id}`,
+  };
+};
 
 module.exports = {
   getEmployeeByID,
   getEmployees,
+  deleteOneEmployee,
 };
